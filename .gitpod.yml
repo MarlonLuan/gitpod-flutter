@@ -2,7 +2,12 @@ image:
   file: Dockerfile
 
 tasks:
-  - init: |
+  - before: |
+      export PATH=/usr/lib/dart/bin:$FLUTTER_HOME/bin:$ANDROID_HOME/bin:$ANDROID_HOME/platform-tools$ANDROID_HOME/tools:$PATH
+      mkdir -p /home/gitpod/.android
+      touch /home/gitpod/.android/repositories.cfg
+    init: |
+      echo "Installing Flutter SDK..."
       yes | flutter doctor --android-licenses
       flutter create example
       cd ./example
