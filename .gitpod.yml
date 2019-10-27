@@ -1,0 +1,18 @@
+image:
+  file: Dockerfile
+
+tasks:
+  - init: |
+      yes | flutter doctor --android-licenses
+      flutter create example
+      cd ./example
+      flutter pub get
+      flutter config --enable-web
+      flutter doctor      
+      echo y | /home/gitpod/tools/bin/sdkmanager "platform-tools" "platforms;android-28" "build-tools;28.0.3";
+    command: |
+      echo "OK!"
+vscode:
+  extensions:
+    - Dart-Code.dart-code@3.5.1:W6zqgIED1gxtkBH/pbfGXA==
+    - Dart-Code.flutter@3.5.1:0FyuzXye7dV19PNst3+Llg==

@@ -1,0 +1,33 @@
+FROM gitpod/workspace-full-vnc
+
+ENV ANDROID_HOME=/home/gitpod/android-sdk-linux \
+    FLUTTER_HOME=/home/gitpod/flutter \
+    PATH=/usr/lib/dart/bin:$FLUTTER_HOME/bin:$ANDROID_HOME/bin:$ANDROID_HOME/platform-tools$ANDROID_HOME/tools:$PATH
+
+USER root
+
+RUN apt-get update && \
+    apt-get -y install apt-utils apt-transport-https && \
+    sh -c 'wget -qO- https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -' && \
+    sh -c 'wget -qO- https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list' && \
+    apt-get update && \
+    apt-get -y install build-essential dart libkrb5-dev gcc make gradle android-tools-adb android-tools-fastboot && \
+    apt-get clean && \
+    apt-get -y autoremove && \
+    apt-get -y clean && \
+    rm -rf /var/lib/apt/lists/*;
+
+USER gitpod
+
+RUN cd /home/gitpod && \
+    wget -qO flutter_sdk.tar.xz https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_v1.9.1+hotfix.6-stable.tar.xz && \
+    tar -xvf flutter_sdk.tar.xz && \
+    rm flutter_sdk.tar.xz && \
+    wget -qO android_studio.tar.gz https://dl.google.com/dl/android/studio/ide-zips/3.5.1.0/android-studio-ide-191.5900203-linux.tar.gz && \
+    tar -vzxf android_studio.tar.gz && \
+    rm -f android_studio.tar.gz && \
+    wget -qO android_sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip && \
+    unzip android_sdk.zip && \
+    rm -f android_sdk.zip && \
+    mkdir -p /home/gitpod/.android && \
+    touch /home/gitpod/.android/repositories.cfg
